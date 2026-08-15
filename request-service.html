@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Service Now | Bucky Towing - Fast Dispatch Madison & Dane County</title>
+    <meta name="description" content="Request immediate towing or roadside assistance in Dane County, WI. Fast GPS location detection, transparent pricing, 24/7 immediate dispatch.">
+    <link rel="canonical" href="https://buckytowing.com/request-service.html">
+
+    <!-- Open Graph / Social Meta -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://buckytowing.com/request-service.html">
+    <meta property="og:title" content="Request Service Now | Bucky Towing Dispatch">
+    <meta property="og:description" content="Submit a roadside assistance request online. Fast dispatch across Madison, WI and Dane County.">
+    <meta property="og:image" content="assets/images/logo.png">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Geist:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=swap" rel="stylesheet">
+    
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Site Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="brand-logo" aria-label="Bucky Towing Home">
+                <img src="assets/images/logo.png" alt="Bucky Towing Logo" width="220" height="54">
+            </a>
+
+            <!-- Prominent Nav Tabs -->
+            <nav class="main-nav" aria-label="Primary Navigation">
+                <a href="index.html" class="nav-tab">Home</a>
+                <a href="services.html" class="nav-tab">Services</a>
+                <a href="about.html" class="nav-tab">About</a>
+                <a href="request-service.html" class="nav-tab active">Request Service</a>
+                <a href="contact.html" class="nav-tab">Contact</a>
+            </nav>
+
+            <div class="header-cta">
+                <a href="tel:6086906868" class="header-phone-btn" title="Call Bucky Towing Dispatch">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">call</span>
+                    <span>608-690-6868</span>
+                </a>
+                <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="section-padding" style="padding-top: 50px;">
+            <div class="container">
+                <div class="section-header reveal" style="margin-bottom: 36px;">
+                    <h1 class="hero-title" style="font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 8px;">Request Service Now</h1>
+                    <p class="section-subtitle">Fill out the form below for immediate roadside assistance.</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 32px;" class="request-grid-layout">
+                    
+                    <!-- Main Service Request Form -->
+                    <div class="form-card reveal">
+                        <div class="form-card-accent-bar"></div>
+                        
+                        <form id="service-request-form">
+                            
+                            <!-- Location Section -->
+                            <div style="margin-bottom: 32px;">
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+                                    <span class="material-symbols-outlined text-accent" style="font-size: 28px;">location_on</span>
+                                    <h2 style="font-size: 1.4rem; font-weight: 800;">Location Details</h2>
+                                </div>
+
+                                <div class="form-group">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                        <label class="form-label" for="pickup_location" style="margin-bottom: 0;">Vehicle Location (Pickup) *</label>
+                                        <button type="button" id="btn-get-location" style="display: inline-flex; align-items: center; gap: 6px; color: var(--color-accent-red); font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: color var(--transition-fast);">
+                                            <span class="material-symbols-outlined" style="font-size: 20px;">my_location</span>
+                                            Use My Current Location
+                                        </button>
+                                    </div>
+                                    <div style="position: relative;">
+                                        <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted);">pin_drop</span>
+                                        <input type="text" id="pickup_location" name="pickup_location" class="form-input" style="padding-left: 46px;" placeholder="Current address, highway mile marker, or intersection" required>
+                                    </div>
+                                    <div id="location-status"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="dropoff_location">Destination (Drop-off)</label>
+                                    <div style="position: relative;">
+                                        <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted);">flag</span>
+                                        <input type="text" id="dropoff_location" name="dropoff_location" class="form-input" style="padding-left: 46px;" placeholder="Repair shop name, home address, or destination">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr style="border: none; border-top: 1px solid var(--color-surface-border-subtle); margin-bottom: 32px;">
+
+                            <!-- Vehicle & Service Reason -->
+                            <div style="margin-bottom: 32px;">
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+                                    <span class="material-symbols-outlined text-accent" style="font-size: 28px;">directions_car</span>
+                                    <h2 style="font-size: 1.4rem; font-weight: 800;">Vehicle & Service</h2>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Reason for Service *</label>
+                                    
+                                    <!-- Service Reasons Grid with updated icons -->
+                                    <div class="service-reason-grid">
+                                        
+                                        <!-- Tow (Replaced Standard Tow) -->
+                                        <label class="service-reason-option selected">
+                                            <input type="radio" name="service_reason" value="Tow" checked>
+                                            <div class="reason-card">
+                                                <span class="material-symbols-outlined">auto_towing</span>
+                                                <span class="reason-card-label">Tow</span>
+                                            </div>
+                                        </label>
+
+                                        <!-- Jump Start (12V Battery icon) -->
+                                        <label class="service-reason-option">
+                                            <input type="radio" name="service_reason" value="Jump Start">
+                                            <div class="reason-card">
+                                                <span class="material-symbols-outlined">battery_charging_full</span>
+                                                <span class="reason-card-label">Jump Start</span>
+                                            </div>
+                                        </label>
+
+                                        <!-- Flat Tire -->
+                                        <label class="service-reason-option">
+                                            <input type="radio" name="service_reason" value="Flat Tire">
+                                            <div class="reason-card">
+                                                <span class="material-symbols-outlined">tire_repair</span>
+                                                <span class="reason-card-label">Flat Tire</span>
+                                            </div>
+                                        </label>
+
+                                        <!-- Lockout -->
+                                        <label class="service-reason-option">
+                                            <input type="radio" name="service_reason" value="Lockout">
+                                            <div class="reason-card">
+                                                <span class="material-symbols-outlined">key</span>
+                                                <span class="reason-card-label">Lockout</span>
+                                            </div>
+                                        </label>
+
+                                        <!-- Fuel Delivery -->
+                                        <label class="service-reason-option">
+                                            <input type="radio" name="service_reason" value="Fuel Delivery">
+                                            <div class="reason-card">
+                                                <span class="material-symbols-outlined">local_gas_station</span>
+                                                <span class="reason-card-label">Fuel Delivery</span>
+                                            </div>
+                                        </label>
+
+                                        <!-- Winch-out (Cable / Hook Icon replaced anchor) -->
+                                        <label class="service-reason-option">
+                                            <input type="radio" name="service_reason" value="Winch-Out">
+                                            <div class="reason-card">
+                                                <span class="material-symbols-outlined">hardware</span>
+                                                <span class="reason-card-label">Winch-Out</span>
+                                            </div>
+                                        </label>
+
+                                        <!-- 12V Battery Installation -->
+                                        <label class="service-reason-option" style="grid-column: span 2;">
+                                            <input type="radio" name="service_reason" value="12V Battery Installation">
+                                            <div class="reason-card">
+                                                <span class="material-symbols-outlined">battery_5_bar</span>
+                                                <span class="reason-card-label">12V Battery Installation</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label" for="vehicle_yymm">Year / Make / Model *</label>
+                                        <input type="text" id="vehicle_yymm" name="vehicle_yymm" class="form-input" placeholder="e.g. 2021 Ford F-150" required>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label class="form-label" for="vehicle_color">Color</label>
+                                            <input type="text" id="vehicle_color" name="vehicle_color" class="form-input" placeholder="e.g. Silver">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label" for="license_plate">License Plate</label>
+                                            <input type="text" id="license_plate" name="license_plate" class="form-input" placeholder="e.g. ABC-1234">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="situation_notes">Situation Details (Optional)</label>
+                                    <textarea id="situation_notes" name="situation_notes" class="form-textarea" rows="3" placeholder="Is the vehicle in a ditch? In a parking ramp? Front wheel damaged?"></textarea>
+                                </div>
+                            </div>
+
+                            <hr style="border: none; border-top: 1px solid var(--color-surface-border-subtle); margin-bottom: 32px;">
+
+                            <!-- Contact Info -->
+                            <div style="margin-bottom: 32px;">
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+                                    <span class="material-symbols-outlined text-accent" style="font-size: 28px;">person</span>
+                                    <h2 style="font-size: 1.4rem; font-weight: 800;">Contact Information</h2>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label" for="customer_name">Your Name *</label>
+                                        <input type="text" id="customer_name" name="customer_name" class="form-input" placeholder="Full Name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="customer_phone">Phone Number *</label>
+                                        <input type="tel" id="customer_phone" name="customer_phone" class="form-input" placeholder="(608) 555-0199" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Photo Upload -->
+                            <div class="form-group" style="margin-bottom: 32px;">
+                                <label class="form-label">Upload Photo of Vehicle / Location (Optional)</label>
+                                <div id="photo-upload-box" style="border: 2px dashed var(--color-surface-border); border-radius: var(--border-radius-sm); padding: 24px; text-align: center; cursor: pointer; background-color: var(--color-surface-charcoal); transition: all var(--transition-fast);">
+                                    <span class="material-symbols-outlined text-accent" style="font-size: 36px; margin-bottom: 8px;">add_a_photo</span>
+                                    <div id="photo-upload-label" style="font-size: 1rem; color: var(--color-text-muted);">
+                                        Click to upload vehicle condition or surroundings photo
+                                    </div>
+                                    <input type="file" id="photo-upload" accept="image/*" style="display: none;">
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary btn-large btn-shimmer" style="width: 100%; font-size: 1.35rem; padding: 18px;">
+                                <span class="material-symbols-outlined">send</span>
+                                Submit Request
+                            </button>
+                            <p style="font-size: 0.95rem; color: var(--color-text-muted); text-align: center; margin-top: 14px;">
+                                By submitting, you agree to our <a href="terms-of-service.html" style="text-decoration: underline;">Terms of Service</a>. <strong style="color: white;">We will text/call immediately.</strong>
+                            </p>
+                        </form>
+                    </div>
+
+                    <!-- Sidebar Info Panel -->
+                    <aside class="reveal">
+                        <!-- Emergency Card with Immediate Danger copy -->
+                        <div style="background-color: var(--color-accent-red); border-radius: var(--border-radius-md); padding: 24px; color: white; margin-bottom: 24px; box-shadow: 0 10px 25px rgba(230, 25, 25, 0.4);">
+                            <div style="display: flex; gap: 14px; align-items: flex-start;">
+                                <span class="material-symbols-outlined" style="font-size: 40px; font-variation-settings: 'FILL' 1;">e911_emergency</span>
+                                <div>
+                                    <h3 style="font-size: 1.35rem; font-weight: 900; margin-bottom: 6px; text-transform: uppercase;">Immediate Danger?</h3>
+                                    <p style="font-size: 1.05rem; margin-bottom: 16px; line-height: 1.4;">If you are in a dangerous situation, call <strong style="font-size: 1.4rem; text-decoration: underline;">911</strong> first.</p>
+                                    <a href="tel:6086906868" class="btn" style="background-color: var(--color-bg-black); color: white; width: 100%; font-size: 1.15rem; padding: 12px 20px;">
+                                        <span class="material-symbols-outlined">call</span>
+                                        608-690-6868
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Trust Indicators with "Fast Response Time" updated -->
+                        <div style="background-color: var(--color-surface-dim); border: 1px solid var(--color-surface-border); border-radius: var(--border-radius-md); padding: 24px;">
+                            <h4 class="footer-col-title" style="margin-bottom: 16px;">Why Choose Bucky</h4>
+                            <ul style="list-style: none; display: flex; flex-direction: column; gap: 16px;">
+                                <li style="display: flex; align-items: center; gap: 12px;">
+                                    <span class="material-symbols-outlined text-accent" style="font-size: 24px;">timer</span>
+                                    <span style="font-weight: 600; font-size: 1.05rem;">Fast Response Time</span>
+                                </li>
+                                <li style="display: flex; align-items: center; gap: 12px;">
+                                    <span class="material-symbols-outlined text-accent" style="font-size: 24px;">verified_user</span>
+                                    <span style="font-weight: 600; font-size: 1.05rem;">Licensed & Insured Operators</span>
+                                </li>
+                                <li style="display: flex; align-items: center; gap: 12px;">
+                                    <span class="material-symbols-outlined text-accent" style="font-size: 24px;">schedule</span>
+                                    <span style="font-weight: 600; font-size: 1.05rem;">24/7 Availability</span>
+                                </li>
+                                <li style="display: flex; align-items: center; gap: 12px;">
+                                    <span class="material-symbols-outlined text-accent" style="font-size: 24px;">credit_card</span>
+                                    <span style="font-weight: 600; font-size: 1.05rem;">All Major Cards Accepted</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </aside>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Standardized Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="assets/images/logo.png" alt="Bucky Towing Logo" style="height: 48px; width: auto; margin-bottom: 16px;">
+                    <p>Professional roadside assistance and towing solutions built on reliability, speed, and authority across Dane County.</p>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="request-service.html">Request Service</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                        <li><a href="services.html#areas">Service Areas</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">Contact</h4>
+                    <ul class="footer-links">
+                        <li style="display: flex; align-items: flex-start; gap: 8px; color: var(--color-text-muted);">
+                            <span class="material-symbols-outlined text-accent" style="font-size: 20px; margin-top: 2px;">location_on</span>
+                            <span>5376 Farmco Dr., Madison, WI 53704</span>
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
+                            <span class="material-symbols-outlined text-accent" style="font-size: 20px;">call</span>
+                            <a href="tel:6086906868" style="color: white; font-weight: 800; font-size: 1.2rem;">608-690-6868</a>
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
+                            <span class="material-symbols-outlined text-accent" style="font-size: 20px;">mail</span>
+                            <a href="mailto:info@buckytowing.com">info@buckytowing.com</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Service Areas List (Madison First) -->
+            <div style="border-top: 1px solid var(--color-surface-border-subtle); padding-top: 24px; margin-bottom: 24px;">
+                <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px;">
+                    <span style="font-family: var(--font-heading); font-weight: 800; font-size: 0.95rem; text-transform: uppercase; color: var(--color-accent-red);">Service Areas:</span>
+                    <a href="services.html" class="service-area-pill">Madison</a>
+                    <a href="services.html" class="service-area-pill">DeForest</a>
+                    <a href="services.html" class="service-area-pill">Sun Prairie</a>
+                    <a href="services.html" class="service-area-pill">Cottage Grove</a>
+                    <a href="services.html" class="service-area-pill">Stoughton</a>
+                    <a href="services.html" class="service-area-pill">Fitchburg</a>
+                    <a href="services.html" class="service-area-pill">Verona</a>
+                    <a href="services.html" class="service-area-pill">Middleton</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Bucky Towing. Created by Eng. Youssef Negm.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav" aria-label="Mobile Bottom Navigation">
+        <a href="index.html" class="mobile-nav-item">
+            <span class="material-symbols-outlined">home</span>
+            <span>Home</span>
+        </a>
+        <a href="services.html" class="mobile-nav-item">
+            <span class="material-symbols-outlined">auto_towing</span>
+            <span>Services</span>
+        </a>
+        <a href="tel:6086906868" class="mobile-nav-item mobile-nav-item-call">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">call</span>
+            <span>Call 24/7</span>
+        </a>
+        <a href="request-service.html" class="mobile-nav-item active">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+            <span>Request</span>
+        </a>
+        <a href="contact.html" class="mobile-nav-item">
+            <span class="material-symbols-outlined">location_on</span>
+            <span>Contact</span>
+        </a>
+    </nav>
+
+    <style>
+    @media (max-width: 991px) {
+        .request-grid-layout {
+            grid-template-columns: 1fr !important;
+        }
+    }
+    </style>
+
+    <!-- Scripts -->
+    <script src="js/main.js" defer></script>
+    <script src="js/request-form.js" defer></script>
+</body>
+</html>
