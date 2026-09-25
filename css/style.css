@@ -357,6 +357,32 @@ h1, h2, h3, h4, h5, h6 {
     animation-duration: 1.5s;
 }
 
+.about-hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.about-hero-actions .btn {
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+}
+
+@media (max-width: 576px) {
+    .about-hero-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+    }
+    .about-hero-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
 @keyframes shimmer {
     0% { background-position: -200% center; }
     100% { background-position: 200% center; }
