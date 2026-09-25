@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bucky Towing - Asset Review & Comparison (September Updates)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Geist:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0F0F0F;
+            --surface-color: #181818;
+            --surface-card: #202020;
+            --border-color: #333333;
+            --accent-red: #D32F2F;
+            --accent-green: #2E7D32;
+            --text-main: #F5F5F5;
+            --text-muted: #A0A0A0;
+            --font-head: 'Montserrat', sans-serif;
+            --font-body: 'Geist', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 50px; }
+        .badge {
+            display: inline-block;
+            background: rgba(211, 47, 47, 0.15);
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+        h1 { font-family: var(--font-head); font-size: 2.4rem; margin-bottom: 12px; }
+        p.subtitle { color: var(--text-muted); font-size: 1.1rem; max-width: 700px; margin: 0 auto; }
+
+        .comparison-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .item-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 28px;
+            overflow: hidden;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .item-title { font-family: var(--font-head); font-size: 1.35rem; }
+        .item-location {
+            background: #262626;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: #ddd;
+            font-weight: 600;
+        }
+
+        .compare-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .compare-row { grid-template-columns: 1fr; }
+        }
+
+        .asset-box {
+            background: var(--surface-card);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #2d2d2d;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .asset-box-label {
+            padding: 10px 16px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .label-old { background: #331515; color: #ff8080; border-bottom: 1px solid #551a1a; }
+        .label-new { background: #132e18; color: #72e283; border-bottom: 1px solid #1e4a26; }
+
+        .asset-img-container {
+            width: 100%;
+            height: 320px;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .asset-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .asset-img-container.contain img {
+            object-fit: contain;
+            background: #000;
+            padding: 10px;
+        }
+
+        .asset-meta {
+            padding: 14px 16px;
+            background: #1a1a1a;
+            border-top: 1px solid #292929;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .icon-preview-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            height: 200px;
+            background: #161616;
+        }
+
+        .icon-badge-sample {
+            width: 60px;
+            height: 60px;
+            background-color: var(--accent-red);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(211,47,47,0.4);
+        }
+
+        .icon-badge-sample svg, .icon-badge-sample span {
+            width: 32px;
+            height: 32px;
+            font-size: 32px;
+        }
+
+        .review-status {
+            margin-top: 50px;
+            background: linear-gradient(135deg, #1c1c1c, #262626);
+            border: 1px solid #444;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+        }
+        .review-status h3 { font-family: var(--font-head); margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <span class="badge">Asset Review & Approval</span>
+        <h1>Bucky Towing — Proposed Assets</h1>
+        <p class="subtitle">Review the newly generated high-resolution assets compared against the previous placeholders and clip arts before code implementation.</p>
+    </header>
+
+    <div class="comparison-grid">
+
+        <!-- 1. Accident Recovery Image -->
+        <div class="item-card">
+            <div class="item-header">
+                <div>
+                    <h2 class="item-title">1. Accident Recovery Vehicle Image</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Client brief: "crashed vehicle, bel 3arabi mas7ooqah, ma67oona"</p>
+                </div>
+                <span class="item-location">Services Tab (Card #2)</span>
+            </div>
+            <div class="compare-row">
+                <div class="asset-box">
+                    <div class="asset-box-label label-old">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">close</span>
+                        Current (assets/images/fleet-2.jpeg)
+                    </div>
+                    <div class="asset-img-container contain">
+                        <img src="../images/fleet-2.jpeg" alt="Current fleet-2">
+                    </div>
+                    <div class="asset-meta">
+                        Black & white clip art of a stick figure changing a tire (not an accident).
+                    </div>
+                </div>
+                <div class="asset-box">
+                    <div class="asset-box-label label-new">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">check</span>
+                        Proposed: accident-recovery-crashed.jpg
+                    </div>
+                    <div class="asset-img-container">
+                        <img src="accident-recovery-crashed.jpg" alt="Proposed accident recovery">
+                    </div>
+                    <div class="asset-meta">
+                        Photorealistic severely crushed ("mas7ooqah") car after a highway collision, with commercial flatbed recovery truck actively winching it.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Winchout Action Image -->
+        <div class="item-card">
+            <div class="item-header">
+                <div>
+                    <h2 class="item-title">2. Winch-Out Service Image</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Client brief: "something that reflects winching more"</p>
+                </div>
+                <span class="item-location">Home Tab Card & Services Tab (Card #7)</span>
+            </div>
+            <div class="compare-row">
+                <div class="asset-box">
+                    <div class="asset-box-label label-old">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">close</span>
+                        Current (assets/images/fleet-1.jpeg)
+                    </div>
+                    <div class="asset-img-container contain">
+                        <img src="../images/fleet-1.jpeg" alt="Current fleet-1">
+                    </div>
+                    <div class="asset-meta">
+                        Cartoon clip art of person pushing car (does not represent winching).
+                    </div>
+                </div>
+                <div class="asset-box">
+                    <div class="asset-box-label label-new">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">check</span>
+                        Proposed: winchout-service-action.jpg
+                    </div>
+                    <div class="asset-img-container">
+                        <img src="winchout-service-action.jpg" alt="Proposed winchout action">
+                    </div>
+                    <div class="asset-meta">
+                        Professional heavy-duty tow truck on roadside with winch cable under tension pulling an SUV stuck deep in mud/snow ditch.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Winch Hardware Image (About Tab) -->
+        <div class="item-card">
+            <div class="item-header">
+                <div>
+                    <h2 class="item-title">3. Tow Winch Equipment Image</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Client brief: "Exchange the Winch clip art with something that looks more real"</p>
+                </div>
+                <span class="item-location">About Tab (Fleet Gallery)</span>
+            </div>
+            <div class="compare-row">
+                <div class="asset-box">
+                    <div class="asset-box-label label-old">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">close</span>
+                        Current (assets/images/fleet-3.jpeg)
+                    </div>
+                    <div class="asset-img-container contain">
+                        <img src="../images/fleet-3.jpeg" alt="Current fleet-3">
+                    </div>
+                    <div class="asset-meta">
+                        Basic black and white graphic icon/clip art of a winch spool.
+                    </div>
+                </div>
+                <div class="asset-box">
+                    <div class="asset-box-label label-new">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">check</span>
+                        Proposed: winch-equipment-real.jpg
+                    </div>
+                    <div class="asset-img-container">
+                        <img src="winch-equipment-real.jpg" alt="Proposed real winch equipment">
+                    </div>
+                    <div class="asset-meta">
+                        Ultra-realistic industrial hydraulic winch mounted on diamond-plate tow truck deck with steel cable, roller fairleads, and heavy hook.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Winchout Icon (Home Tab) -->
+        <div class="item-card">
+            <div class="item-header">
+                <div>
+                    <h2 class="item-title">4. Winch-Out Service Icon</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Client brief: "Exchange Winchout Service Icon with something that reflects winching more"</p>
+                </div>
+                <span class="item-location">Home Tab (Service Card Icon Badge)</span>
+            </div>
+            <div class="compare-row">
+                <div class="asset-box">
+                    <div class="asset-box-label label-old">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">close</span>
+                        Current: 'hardware' icon
+                    </div>
+                    <div class="icon-preview-box">
+                        <div class="icon-badge-sample">
+                            <span class="material-symbols-outlined">hardware</span>
+                        </div>
+                    </div>
+                    <div class="asset-meta">
+                        Generic wrench/screwdriver hardware icon.
+                    </div>
+                </div>
+                <div class="asset-box">
+                    <div class="asset-box-label label-new">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">check</span>
+                        Proposed: Custom Winch Vector Icon
+                    </div>
+                    <div class="icon-preview-box">
+                        <div class="icon-badge-sample" title="Option 1: Winch Drum & Cable Hook">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                                <path d="M3 6a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6zm15 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V6z" opacity="0.9"/>
+                                <rect x="6" y="7" width="12" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                                <line x1="8.5" y1="7" x2="8.5" y2="17" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                                <line x1="11" y1="7" x2="11" y2="17" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                                <line x1="13.5" y1="7" x2="13.5" y2="17" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                                <line x1="16" y1="7" x2="16" y2="17" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                                <path d="M12 17v2.5a1.5 1.5 0 0 0 1.5 1.5h.5a1.5 1.5 0 0 1 1.5 1.5v.2a1.8 1.8 0 0 1-3.6 0v-.7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="icon-badge-sample" title="Option 2: Recovery Pulley & Cable Hook">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                                <circle cx="12" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                                <circle cx="12" cy="7" r="1.5" fill="currentColor"/>
+                                <path d="M4 3 L9.5 5.5 M14.5 5.5 L20 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                <path d="M12 11.5 v 2.5 c 0 2.5 2 4.5 4 4.5 c 1.8 0 3-1.2 3-2.5 c 0-1.2-1-2-2-2 c -.8 0-1.5.5-1.5 1.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="asset-meta">
+                        Two custom SVG options: Left (Winch Drum & Cable Hook), Right (Recovery Pulley & Hook). Scalable, pixel-perfect in the red badge.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="review-status">
+        <h3>Ready For Your Review & Feedback</h3>
+        <p style="color: var(--text-muted);">All assets are stored in <code>assets/proposed-updates/</code>. Once approved, they will be applied across the code along with all requested tab & copy changes.</p>
+    </div>
+</div>
+
+</body>
+</html>

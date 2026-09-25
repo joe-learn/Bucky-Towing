@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+  <!-- Pulley / recovery block & heavy tow hook -->
+  <circle cx="12" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <circle cx="12" cy="7" r="1.5" fill="currentColor"/>
+  <!-- Tension cable going through pulley -->
+  <path d="M4 3 L9.5 5.5 M14.5 5.5 L20 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- Hook eye and heavy recovery hook -->
+  <path d="M12 11.5 v 2.5 c 0 2.5 2 4.5 4 4.5 c 1.8 0 3-1.2 3-2.5 c 0-1.2-1-2-2-2 c -.8 0-1.5.5-1.5 1.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg>

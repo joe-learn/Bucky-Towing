@@ -61,9 +61,11 @@ function initMobileNav() {
             <a href="index.html" class="nav-tab text-xl font-bold py-3 border-b border-white/10">Home</a>
             <a href="services.html" class="nav-tab text-xl font-bold py-3 border-b border-white/10">Services</a>
             <a href="about.html" class="nav-tab text-xl font-bold py-3 border-b border-white/10">About</a>
-            <a href="request-service.html" class="nav-tab text-xl font-bold py-3 border-b border-white/10">Request Service</a>
             <a href="contact.html" class="nav-tab text-xl font-bold py-3 border-b border-white/10">Contact</a>
             <div class="mt-6 flex flex-col gap-3">
+                <a href="https://public.towbook.com/k7KV" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-large w-full flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-accent">send</span> Request Service Online
+                </a>
                 <a href="tel:6086906868" class="btn btn-primary btn-large w-full flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined">call</span> 608-690-6868
                 </a>
