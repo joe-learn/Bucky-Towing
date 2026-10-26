@@ -130,68 +130,61 @@ function initScrollReveal() {
 function initParticleCanvas() {
     const canvas = document.getElementById('particles-canvas');
     if (!canvas) return;
-
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    let particles = [];
-    const particleCount = 35;
-    let animationFrameId;
+    let W = 0, H = 0, dpr = 1, particles = [], running = false, rafId = 0;
 
     function resize() {
-        canvas.width = canvas.offsetWidth || window.innerWidth;
-        canvas.height = canvas.offsetHeight || window.innerHeight;
+        const rect = canvas.getBoundingClientRect();
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = Math.max(1, rect.width); H = Math.max(1, rect.height);
+        canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
-
-    function createParticles() {
-        particles = [];
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: canvas.height + Math.random() * 50,
-                size: Math.random() * 2.2 + 0.8,
-                speedX: (Math.random() - 0.5) * 1.2,
-                speedY: -(Math.random() * 1.5 + 0.5),
-                opacity: Math.random() * 0.6 + 0.2,
-                color: Math.random() > 0.4 ? '#E61919' : '#ff7a7a'
-            });
-        }
+    function spawn(p, anywhere) {
+        p.x = Math.random() * W;
+        p.y = anywhere ? Math.random() * H : H + Math.random() * 40;
+        p.r = Math.random() * 2 + 0.7;
+        p.vy = -(Math.random() * 0.9 + 0.35);
+        p.vx = (Math.random() - 0.5) * 0.5;
+        p.sway = Math.random() * Math.PI * 2;
+        p.a = Math.random() * 0.55 + 0.25;
+        p.c = Math.random() > 0.35 ? '230,25,25' : '255,140,90';
+        return p;
     }
-
+    function populate() {
+        const count = Math.round(Math.min(110, Math.max(36, (W * H) / 14000)));
+        particles = Array.from({ length: count }, () => spawn({}, true));
+    }
     function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            return;
-        }
-
-        particles.forEach(p => {
-            p.y += p.speedY;
-            p.x += p.speedX;
-
-            if (p.y < -10) {
-                p.y = canvas.height + 10;
-                p.x = Math.random() * canvas.width;
-            }
-
-            ctx.globalAlpha = p.opacity;
-            ctx.fillStyle = p.color;
+        ctx.clearRect(0, 0, W, H);
+        for (const p of particles) {
+            p.sway += 0.02;
+            p.x += p.vx + Math.sin(p.sway) * 0.25;
+            p.y += p.vy;
+            if (p.y < -12 || p.x < -12 || p.x > W + 12) spawn(p, false);
+            const fade = Math.min(1, p.y / (H * 0.25)); // embers fade out near the top
+            ctx.globalAlpha = p.a * Math.max(0, fade);
+            ctx.fillStyle = `rgb(${p.c})`;
+            ctx.shadowColor = `rgba(${p.c},0.9)`;
+            ctx.shadowBlur = p.r * 4;
             ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
             ctx.fill();
-        });
-
-        animationFrameId = requestAnimationFrame(draw);
+        }
+        rafId = requestAnimationFrame(draw);
     }
+    const start = () => { if (!running) { running = true; rafId = requestAnimationFrame(draw); } };
+    const stop = () => { running = false; cancelAnimationFrame(rafId); };
 
-    window.addEventListener('resize', () => {
-        resize();
-        createParticles();
-    }, { passive: true });
-
+    // only animate while the hero is on screen (saves battery on phones)
+    new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop())).observe(canvas);
+    let t;
+    window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { resize(); populate(); }, 150); }, { passive: true });
     resize();
-    createParticles();
-    draw();
+    populate();
 }
 
 
@@ -265,33 +258,36 @@ function initStaggerGroups() {
     document.querySelectorAll('.service-area-pill').forEach(p => groups.add(p.parentElement));
     document.querySelectorAll('.map-container').forEach(m => groups.add(m));
 
+    // Each item reveals on its own as it scrolls into view; items arriving together are staggered.
+    let batch = 0, batchTimer = 0;
     const io = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (!entry.isIntersecting) return;
-            const g = entry.target;
-            io.unobserve(g);
-            g.classList.add('fx-in');
-            const longest = (g.__fxCount || 1) * 70 + 900;
+            const el = entry.target;
+            io.unobserve(el);
+            el.style.setProperty('--fx-d', `${Math.min(batch, 6) * 90}ms`);
+            batch++;
+            el.classList.add('fx-show');
             setTimeout(() => {
-                g.classList.add('fx-done');
-                g.querySelectorAll(':scope > .fx-item').forEach(el => el.classList.remove('fx-item'));
-            }, longest);
+                el.classList.add('fx-settled');
+                el.classList.remove('fx-item', 'fx-show');
+            }, 1300 + Math.min(batch, 6) * 90);
         });
-    }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+        clearTimeout(batchTimer);
+        batchTimer = setTimeout(() => { batch = 0; }, 120);
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
 
     groups.forEach(g => {
         if (!g || g.closest('#preloader, #mobile-drawer')) return;
         const kids = [...g.children].filter(el => !['SCRIPT', 'STYLE', 'svg'].includes(el.tagName) && !el.classList.contains('map-svg-bg'));
         if (!kids.length) return;
         g.classList.add('fx-stagger');
-        if (g.classList.contains('reveal')) g.classList.add('active');
-        kids.forEach((el, i) => {
+        if (g.classList.contains('reveal')) { g.classList.remove('reveal'); }
+        kids.forEach((el) => {
             el.classList.remove('reveal');
             el.classList.add('fx-item');
-            el.style.setProperty('--fx-i', i);
+            io.observe(el);
         });
-        g.__fxCount = kids.length;
-        io.observe(g);
     });
 }
 
