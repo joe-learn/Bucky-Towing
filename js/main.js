@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileNav();
     initScrollReveal();
     initParticleCanvas();
+    initMotion();
 });
 
 /* ---------------------------------------------------------
@@ -191,4 +192,145 @@ function initParticleCanvas() {
     resize();
     createParticles();
     draw();
+}
+
+
+/* ---------------------------------------------------------
+   5. Motion System — intro loader, entrances, scroll effects
+   (opacity/transform only, so layout & responsive never change)
+   --------------------------------------------------------- */
+function initMotion() {
+    const root = document.documentElement;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const markReady = () => root.classList.add('site-ready');
+
+    initPreloader(markReady);
+    if (reduce) { markReady(); return; }
+
+    initScrollProgress();
+    initStaggerGroups();
+    initAccentUnderlines();
+    initButtonRipple();
+    initPageTransitions();
+}
+
+function initPreloader(onDone) {
+    const pl = document.getElementById('preloader');
+    const root = document.documentElement;
+    if (!pl || root.classList.contains('pl-skip')) {
+        if (pl) pl.remove();
+        onDone();
+        return;
+    }
+    try { sessionStorage.setItem('bt_intro', '1'); } catch (e) { /* private mode */ }
+
+    const MIN_MS = 2800, MAX_MS = 4800;
+    const started = performance.now();
+    let finished = false;
+    const finish = () => {
+        if (finished) return;
+        finished = true;
+        pl.classList.add('pl-done');
+        onDone();
+        setTimeout(() => pl.remove(), 800);
+    };
+    const whenLoaded = () => setTimeout(finish, Math.max(0, MIN_MS - (performance.now() - started)));
+    if (document.readyState === 'complete') whenLoaded();
+    else window.addEventListener('load', whenLoaded, { once: true });
+    setTimeout(finish, MAX_MS);
+    pl.addEventListener('click', finish); // tap to skip
+}
+
+function initScrollProgress() {
+    const bar = document.createElement('div');
+    bar.id = 'scroll-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(bar);
+    let ticking = false;
+    const update = () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`;
+        ticking = false;
+    };
+    window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+}
+
+function initStaggerGroups() {
+    const groups = new Set();
+    ['.services-grid', '.services-catalog-grid', '.trust-grid', '.footer-grid',
+     '.fleet-gallery-grid', '.form-row', '.contact-grid-layout > div:first-child > .form-card > div']
+        .forEach(sel => document.querySelectorAll(sel).forEach(g => groups.add(g)));
+    document.querySelectorAll('.service-area-pill').forEach(p => groups.add(p.parentElement));
+    document.querySelectorAll('.map-container').forEach(m => groups.add(m));
+
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const g = entry.target;
+            io.unobserve(g);
+            g.classList.add('fx-in');
+            const longest = (g.__fxCount || 1) * 70 + 900;
+            setTimeout(() => {
+                g.classList.add('fx-done');
+                g.querySelectorAll(':scope > .fx-item').forEach(el => el.classList.remove('fx-item'));
+            }, longest);
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+
+    groups.forEach(g => {
+        if (!g || g.closest('#preloader, #mobile-drawer')) return;
+        const kids = [...g.children].filter(el => !['SCRIPT', 'STYLE', 'svg'].includes(el.tagName) && !el.classList.contains('map-svg-bg'));
+        if (!kids.length) return;
+        g.classList.add('fx-stagger');
+        if (g.classList.contains('reveal')) g.classList.add('active');
+        kids.forEach((el, i) => {
+            el.classList.remove('reveal');
+            el.classList.add('fx-item');
+            el.style.setProperty('--fx-i', i);
+        });
+        g.__fxCount = kids.length;
+        io.observe(g);
+    });
+}
+
+function initAccentUnderlines() {
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('fx-in'); io.unobserve(e.target); } });
+    }, { threshold: 0.6 });
+    document.querySelectorAll('.section-title .text-accent, .hero-title .text-accent').forEach(el => {
+        el.classList.add('fx-underline');
+        io.observe(el);
+    });
+}
+
+function initButtonRipple() {
+    document.addEventListener('pointerdown', (e) => {
+        const btn = e.target.closest('.btn, .header-phone-btn, .drawer-link');
+        if (!btn) return;
+        const r = btn.getBoundingClientRect();
+        const size = Math.max(r.width, r.height) * 2;
+        const ink = document.createElement('span');
+        ink.className = 'fx-ripple';
+        ink.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - r.left - size / 2}px;top:${e.clientY - r.top - size / 2}px`;
+        btn.appendChild(ink);
+        setTimeout(() => ink.remove(), 650);
+    }, { passive: true });
+}
+
+function initPageTransitions() {
+    const root = document.documentElement;
+    window.addEventListener('pageshow', (e) => { if (e.persisted) root.classList.remove('page-leaving'); });
+    document.addEventListener('click', (e) => {
+        const a = e.target.closest('a[href]');
+        if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        if (a.target && a.target !== '_self') return;
+        const url = new URL(a.href, location.href);
+        if (url.origin !== location.origin || !/\.html?$|\/$/.test(url.pathname)) return;
+        if (url.pathname === location.pathname && url.hash) return;
+        e.preventDefault();
+        root.classList.add('page-leaving');
+        setTimeout(() => { location.href = url.href; }, 220);
+    });
 }
