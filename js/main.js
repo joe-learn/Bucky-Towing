@@ -29,59 +29,74 @@ function initHeaderScroll() {
 }
 
 /* ---------------------------------------------------------
-   2. Mobile Drawer Navigation
+   2. Mobile Drawer Navigation (animated)
    --------------------------------------------------------- */
 function initMobileNav() {
     const toggleBtn = document.querySelector('.mobile-menu-toggle');
     if (!toggleBtn) return;
 
-    // Create mobile menu overlay if not already in DOM
+    const page = (location.pathname.split('/').pop() || 'index.html').replace('.html', '') || 'index';
+    const links = [
+        { href: 'index.html', key: 'index', icon: 'home', label: 'Home' },
+        { href: 'services.html', key: 'services', icon: 'auto_towing', label: 'Services' },
+        { href: 'about.html', key: 'about', icon: 'info', label: 'About Us' },
+        { href: 'contact.html', key: 'contact', icon: 'location_on', label: 'Contact' },
+        { href: 'https://public.towbook.com/k7KV', key: 'request', icon: 'send', label: 'Request Service', external: true }
+    ];
+
     let drawer = document.getElementById('mobile-drawer');
     if (!drawer) {
         drawer = document.createElement('div');
         drawer.id = 'mobile-drawer';
-        drawer.style.cssText = `
-            position: fixed;
-            top: 86px;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(11, 11, 11, 0.98);
-            backdrop-filter: blur(20px);
-            z-index: 99;
-            display: none;
-            flex-direction: column;
-            padding: 30px 24px;
-            gap: 20px;
-            overflow-y: auto;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        `;
-        
+        drawer.className = 'mobile-drawer';
+        drawer.setAttribute('aria-hidden', 'true');
         drawer.innerHTML = `
-            <a href="index.html" class="nav-tab text-xl font-bold py-3 border-b border-white/10">Home</a>
-            <a href="services.html" class="nav-tab text-xl font-bold py-3 border-b border-white/10">Services</a>
-            <a href="about.html" class="nav-tab text-xl font-bold py-3 border-b border-white/10">About</a>
-            <a href="contact.html" class="nav-tab text-xl font-bold py-3 border-b border-white/10">Contact</a>
-            <div class="mt-6 flex flex-col gap-3">
-                <a href="https://public.towbook.com/k7KV" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-large w-full flex items-center justify-center gap-2">
-                    <span class="material-symbols-outlined text-accent">send</span> Request Service Online
-                </a>
-                <a href="tel:6086906868" class="btn btn-primary btn-large w-full flex items-center justify-center gap-2">
-                    <span class="material-symbols-outlined">call</span> 608-690-6868
-                </a>
-            </div>
-        `;
+            <div class="drawer-backdrop" data-close></div>
+            <nav class="drawer-panel" aria-label="Mobile Navigation">
+                <ul class="drawer-links">
+                    ${links.map((l, i) => `
+                    <li style="--i:${i}">
+                        <a href="${l.href}" class="drawer-link${l.key === page ? ' is-active' : ''}"
+                           ${l.external ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+                            <span class="drawer-link-icon material-symbols-outlined">${l.icon}</span>
+                            <span class="drawer-link-label">${l.label}</span>
+                            <span class="drawer-link-arrow material-symbols-outlined">${l.external ? 'open_in_new' : 'arrow_forward'}</span>
+                        </a>
+                    </li>`).join('')}
+                </ul>
+                <div class="drawer-cta" style="--i:${links.length}">
+                    <a href="tel:6086906868" class="btn btn-primary btn-shimmer drawer-call">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">call</span>
+                        Call 608-690-6868
+                    </a>
+                    <p class="drawer-note"><span class="drawer-pulse"></span>24/7 Emergency Dispatch &middot; Dane County, WI</p>
+                </div>
+            </nav>`;
         document.body.appendChild(drawer);
     }
 
-    let isOpen = false;
-    toggleBtn.addEventListener('click', () => {
-        isOpen = !isOpen;
-        drawer.style.display = isOpen ? 'flex' : 'none';
-        toggleBtn.innerHTML = isOpen 
-            ? '<span class="material-symbols-outlined text-3xl">close</span>' 
-            : '<span class="material-symbols-outlined text-3xl">menu</span>';
+    const icon = (name) => `<span class="material-symbols-outlined">${name}</span>`;
+    toggleBtn.setAttribute('aria-expanded', 'false');
+    toggleBtn.setAttribute('aria-controls', 'mobile-drawer');
+
+    const setOpen = (open) => {
+        const header = document.querySelector('.site-header');
+        const top = header ? Math.max(0, header.getBoundingClientRect().bottom) : 0;
+        drawer.style.setProperty('--drawer-top', top + 'px');
+        drawer.classList.toggle('is-open', open);
+        drawer.setAttribute('aria-hidden', String(!open));
+        document.body.classList.toggle('drawer-open', open);
+        toggleBtn.classList.toggle('is-open', open);
+        toggleBtn.setAttribute('aria-expanded', String(open));
+        toggleBtn.innerHTML = icon(open ? 'close' : 'menu');
+    };
+
+    toggleBtn.addEventListener('click', () => setOpen(!drawer.classList.contains('is-open')));
+    drawer.addEventListener('click', (e) => {
+        if (e.target.closest('[data-close]') || e.target.closest('a')) setOpen(false);
     });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+    window.addEventListener('resize', () => { if (window.innerWidth > 991) setOpen(false); });
 }
 
 /* ---------------------------------------------------------
