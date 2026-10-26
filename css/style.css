@@ -1330,3 +1330,99 @@ h1, h2, h3, h4, h5, h6 {
         transform: none;
     }
 }
+
+/* =========================================================
+   RESPONSIVE POLISH — phones, tablets, laptops
+   ========================================================= */
+
+/* Utility used across pages (was referenced but never defined) */
+.text-center { text-align: center; }
+.text-center .section-subtitle,
+.text-center .hero-subtitle { margin-left: auto; margin-right: auto; }
+
+/* Grid children must never force horizontal overflow */
+.contact-grid-layout > *,
+.request-grid-layout > *,
+.about-hero-grid > * { min-width: 0; }
+
+/* Home "Our Services": lone last card fills the row on tablets */
+@media (min-width: 641px) and (max-width: 991px) {
+    .services-grid > .service-card-standard:last-child:nth-child(even) {
+        grid-column: span 12;
+    }
+}
+
+/* Services page: center a lone last card instead of leaving a hole */
+@media (min-width: 992px) {
+    .services-catalog-grid > :last-child:nth-child(3n+1) { grid-column: 2 !important; }
+}
+@media (min-width: 641px) and (max-width: 991px) {
+    .services-catalog-grid > :last-child:nth-child(odd) {
+        grid-column: 1 / -1 !important;
+        justify-self: center;
+        width: calc(50% - var(--gutter) / 2);
+    }
+}
+
+/* About "Our Fleet in Action": 3-up on tablets instead of 3 giant stacked squares */
+@media (min-width: 577px) and (max-width: 991px) {
+    div.fleet-gallery-grid.fleet-gallery-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 14px !important;
+    }
+}
+
+/* Phones */
+@media (max-width: 576px) {
+    /* Big call-to-action buttons: one line, full width, no overflow */
+    .btn-large {
+        width: 100%;
+        max-width: 100%;
+        white-space: nowrap;
+        font-size: clamp(0.82rem, 3.9vw, 1.1rem) !important;
+        padding: 16px 14px !important;
+        letter-spacing: 0.01em;
+        gap: 8px;
+    }
+    .btn-large .material-symbols-outlined { font-size: 20px; }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    .hero-actions .btn { width: 100%; }
+
+    /* Cards with roomy desktop padding */
+    .form-card { padding: 24px 18px; }
+    .contact-help-card { padding: 24px 20px !important; }
+    .contact-help-card h2 { font-size: 1.5rem !important; }
+    .legal-card { padding: 24px 18px !important; }
+
+    /* About slider: keep arrows clear of the caption text */
+    .slideshow-controls {
+        inset: 0 0 auto 0;
+        height: 55%;
+        padding: 0 10px;
+    }
+    .slide-btn { width: 36px; height: 36px; }
+    .slide-caption { padding: 16px 16px 28px; }
+    .slide-caption h4 { font-size: 1.1rem; }
+    .slide-caption p { font-size: 0.9rem; }
+
+    /* Coverage map: smaller pins/labels so they don't collide */
+    .map-container { height: 340px; }
+    .pin-icon { width: 28px; height: 28px; }
+    .pin-icon .material-symbols-outlined { font-size: 16px !important; }
+    .pin-label { font-size: 0.68rem; padding: 2px 6px; }
+    .pin-label-extra { display: none; }
+    .map-pin[style*="left: 30%"] { left: 21% !important; } /* Verona: avoid overlapping Fitchburg */
+
+    .section-subtitle { font-size: 1.05rem; }
+}
+
+/* Very small phones (≤ 380px) */
+@media (max-width: 380px) {
+    .container { padding-left: 16px; padding-right: 16px; }
+    .header-phone-btn { padding-left: 12px; padding-right: 12px; }
+}
