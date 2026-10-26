@@ -427,6 +427,8 @@ h1, h2, h3, h4, h5, h6 {
 #particles-canvas {
     position: absolute;
     inset: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 2;
 }
@@ -1728,22 +1730,25 @@ html.site-ready .hero-bg img {
     100% { box-shadow: 0 0 0 0 rgba(230, 25, 25, 0); }
 }
 
-/* ---------- Staggered group reveals ---------- */
+/* ---------- Scroll reveals: each item appears as it enters the screen ---------- */
 .fx-stagger > .fx-item {
     opacity: 0;
-    transform: translateY(26px) scale(0.985);
-    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: calc(var(--fx-i, 0) * 70ms);
+    transform: translate3d(0, 46px, 0) scale(0.97);
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--fx-d, 0ms);
+    will-change: opacity, transform;
 }
-.fx-stagger.fx-in > .fx-item { opacity: 1; transform: none; }
-/* after the entrance JS removes .fx-item, so each component's own hover transitions apply again */
+.fx-stagger > .fx-item.fx-show { opacity: 1; transform: none; }
 
-/* map: keep each pin's positioning transform, animate the icon instead */
-.map-container.fx-stagger > .fx-item { opacity: 0; transform: translate(-50%, -100%); transition: opacity 0.5s ease; transition-delay: calc(var(--fx-i, 0) * 110ms); }
-.map-container.fx-stagger.fx-in > .fx-item { opacity: 1; transform: translate(-50%, -100%); }
-.map-container.fx-in .pin-icon { animation: pinDrop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both; animation-delay: calc(var(--fx-i, 0) * 110ms); }
-.map-container.fx-done .pin-icon { animation: none; }
-@keyframes pinDrop { from { translate: 0 -34px; } to { translate: 0 0; } }
+/* small items (city pills, footer columns, form rows) travel less */
+.footer-grid > .fx-item, .form-row > .fx-item, .fx-stagger > .service-area-pill.fx-item { transform: translate3d(0, 22px, 0); }
+.footer-grid > .fx-item.fx-show, .form-row > .fx-item.fx-show, .fx-stagger > .service-area-pill.fx-item.fx-show { transform: none; }
+
+/* map: keep each pin's own positioning, fade it and drop the icon */
+.map-container > .fx-item { opacity: 0; transform: translate(-50%, -100%); transition: opacity 0.6s ease var(--fx-d, 0ms); }
+.map-container > .fx-item.fx-show { opacity: 1; transform: translate(-50%, -100%); }
+.map-container > .fx-show .pin-icon { animation: pinDrop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) var(--fx-d, 0ms) both; }
+@keyframes pinDrop { from { translate: 0 -40px; } to { translate: 0 0; } }
 .map-container .map-pin:first-of-type .pin-icon { animation: hqPulse 2s ease-out infinite; }
 @keyframes hqPulse {
     0%   { box-shadow: 0 0 0 0 rgba(230, 25, 25, 0.7), 0 4px 12px rgba(230, 25, 25, 0.6); }
@@ -1751,17 +1756,16 @@ html.site-ready .hero-bg img {
     100% { box-shadow: 0 0 0 0 rgba(230, 25, 25, 0), 0 4px 12px rgba(230, 25, 25, 0.6); }
 }
 
-/* Card photos ease in when revealed (gives motion on touch screens too) */
+/* card photos settle from a slight zoom as they appear */
 .service-card-bg img, .catalog-card-image img, .fleet-gallery-grid img {
-    transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.fx-stagger:not(.fx-in) .service-card-bg img,
-.fx-stagger:not(.fx-in) .catalog-card-image img,
-.fx-stagger:not(.fx-in) .fleet-gallery-grid img,
-.fleet-gallery-grid.fx-stagger:not(.fx-in) img { transform: scale(1.14); }
+.fx-item:not(.fx-show) .service-card-bg img,
+.fx-item:not(.fx-show) .catalog-card-image img,
+.fleet-gallery-grid > .fx-item:not(.fx-show) img { transform: scale(1.16); }
 
 /* Trust icons spin in */
-.trust-grid.fx-in .trust-icon-box { animation: iconSpin 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both; animation-delay: calc(var(--fx-i, 0) * 90ms + 0.15s); }
+.trust-grid > .fx-show .trust-icon-box { animation: iconSpin 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--fx-d, 0ms) + 0.15s) both; }
 @keyframes iconSpin { from { transform: rotate(-120deg) scale(0.4); opacity: 0; } to { transform: none; opacity: 1; } }
 
 /* ---------- Red accent words: underline sweeps in ---------- */
@@ -1841,6 +1845,6 @@ a[href^="tel:"] > .material-symbols-outlined:first-child { display: inline-block
     .mobile-nav-item.active .material-symbols-outlined, .map-container .pin-icon { animation: none !important; }
     html.js-anim .hero-content > * { opacity: 1; }
     .fx-stagger > .fx-item { opacity: 1 !important; transform: none !important; transition: none !important; }
-    .map-container.fx-stagger > .fx-item { transform: translate(-50%, -100%) !important; }
+    .map-container > .fx-item { transform: translate(-50%, -100%) !important; }
     .fx-underline { background-size: 100% 0.09em; transition: none; }
 }
