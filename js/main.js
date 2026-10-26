@@ -87,6 +87,7 @@ function initMobileNav() {
         drawer.classList.toggle('is-open', open);
         drawer.setAttribute('aria-hidden', String(!open));
         document.body.classList.toggle('drawer-open', open);
+        if (window.__lenis) { open ? window.__lenis.stop() : window.__lenis.start(); }
         toggleBtn.classList.toggle('is-open', open);
         toggleBtn.setAttribute('aria-expanded', String(open));
         toggleBtn.innerHTML = icon(open ? 'close' : 'menu');
@@ -200,6 +201,8 @@ function initMotion() {
     initPreloader(markReady);
     if (reduce) { markReady(); return; }
 
+    initSmoothScroll();
+    initHeroParallax();
     initScrollProgress();
     initStaggerGroups();
     initAccentUnderlines();
@@ -329,4 +332,50 @@ function initPageTransitions() {
         root.classList.add('page-leaving');
         setTimeout(() => { location.href = url.href; }, 220);
     });
+}
+
+
+/* Inertia ("buttery") scrolling on desktop wheels/trackpads and touch screens */
+function initSmoothScroll() {
+    if (typeof window.Lenis !== 'function') return;
+    const lenis = new window.Lenis({
+        lerp: 0.085,
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        syncTouch: true,
+        syncTouchLerp: 0.075,
+        touchInertiaMultiplier: 30,
+        touchMultiplier: 1.1
+    });
+    window.__lenis = lenis;
+    const raf = (t) => { lenis.raf(t); requestAnimationFrame(raf); };
+    requestAnimationFrame(raf);
+    // in-page anchor links glide too
+    document.addEventListener('click', (e) => {
+        const a = e.target.closest('a[href^="#"]');
+        if (!a || a.getAttribute('href').length < 2) return;
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); lenis.scrollTo(target, { offset: -90 }); }
+    });
+}
+
+/* Hero: photo drifts slower than the page, text lifts and fades as you scroll */
+function initHeroParallax() {
+    const hero = document.querySelector('.hero-section');
+    const bg = hero && hero.querySelector('.hero-bg');
+    const content = hero && hero.querySelector('.hero-content');
+    if (!hero || !bg) return;
+    let ticking = false;
+    const update = () => {
+        ticking = false;
+        const h = hero.offsetHeight || 1;
+        const y = Math.min(window.scrollY, h);
+        bg.style.transform = `translate3d(0, ${(y * 0.28).toFixed(1)}px, 0)`;
+        if (content) {
+            content.style.transform = `translate3d(0, ${(-y * 0.12).toFixed(1)}px, 0)`;
+            content.style.opacity = String(Math.max(0, 1 - (y / h) * 1.1));
+        }
+    };
+    window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    update();
 }
