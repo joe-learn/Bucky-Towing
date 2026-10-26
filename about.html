@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>(function(h){h.classList.add('js-anim');try{if(sessionStorage.getItem('bt_intro'))h.classList.add('pl-skip')}catch(e){h.classList.add('pl-skip')}setTimeout(function(){h.classList.add('site-ready')},6500)})(document.documentElement)</script>
     <title>About Us | Bucky Towing - Serving Dane County Since 2020</title>
     <meta name="description"
         content="Locally owned & operated since 2020, Bucky Towing delivers fast, reliable, professional towing and roadside assistance across Madison and Dane County, WI.">
@@ -33,6 +34,102 @@
 </head>
 
 <body>
+    <!-- Intro loader: tow truck pulling a car across the screen -->
+    <div id="preloader" aria-hidden="true">
+        <div class="pl-inner">
+            <img class="pl-logo" src="assets/images/logo-mark.png" alt="" width="104" height="111">
+            <p class="pl-title">BUCKY <span>TOWING</span></p>
+            <p class="pl-tag">24/7 Roadside Rescue &middot; Dane County, WI</p>
+        </div>
+        <div class="pl-stage">
+            <div class="pl-rig">
+                <svg class="pl-svg" viewBox="0 0 560 136" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="plBody" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#2a2d2e"/><stop offset="1" stop-color="#0f1111"/>
+                        </linearGradient>
+                        <linearGradient id="plCar" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#3a3e40"/><stop offset="1" stop-color="#17191a"/>
+                        </linearGradient>
+                        <linearGradient id="plGlass" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#5d6b75"/><stop offset="1" stop-color="#1c2328"/>
+                        </linearGradient>
+                        <radialGradient id="plBeam" cx="0" cy="0.5" r="1">
+                            <stop offset="0" stop-color="#fff6cf" stop-opacity=".32"/><stop offset="1" stop-color="#fff6cf" stop-opacity="0"/>
+                        </radialGradient>
+                        <g id="plWheel">
+                            <circle r="15" fill="#0b0b0b"/>
+                            <circle r="15" fill="none" stroke="#2b2b2b" stroke-width="3"/>
+                            <circle r="8" fill="#9aa1a5"/>
+                            <g class="pl-spokes" stroke="#4a4f52" stroke-width="2.2" stroke-linecap="round">
+                                <line x1="-7" y1="0" x2="7" y2="0"/><line x1="0" y1="-7" x2="0" y2="7"/>
+                                <line x1="-5" y1="-5" x2="5" y2="5"/><line x1="-5" y1="5" x2="5" y2="-5"/>
+                            </g>
+                            <circle r="2.6" fill="#E61919"/>
+                        </g>
+                    </defs>
+    
+                    <!-- Headlight beam -->
+                    <path class="pl-beam" d="M520 92 L585 80 L585 116 Z" fill="url(#plBeam)"/>
+    
+                    <!-- Tow sling / chain to car -->
+                    <path d="M260 106 L206 123 L168 123" stroke="#5b6266" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M170 123 L172 114 M200 123 L198 114" stroke="#E61919" stroke-width="3.5" stroke-linecap="round"/>
+    
+                    <!-- Towed car (front wheels lifted) -->
+                    <g class="pl-car" transform="rotate(-5 66 128)">
+                        <path d="M18 110 Q20 96 40 93 L72 90 Q92 70 116 68 L160 68 Q178 70 194 88 L214 92 Q226 95 226 108 L226 116 L18 116 Z" fill="url(#plCar)" stroke="#000" stroke-width="1.2"/>
+                        <path d="M80 90 Q96 75 116 74 L136 74 L136 90 Z" fill="url(#plGlass)"/>
+                        <path d="M142 74 L158 74 Q172 76 184 90 L142 90 Z" fill="url(#plGlass)"/>
+                        <rect x="20" y="100" width="8" height="5" rx="1.5" fill="#E61919"/>
+                        <path d="M214 98 l10 2 v5 h-10 z" fill="#d7d2c0"/>
+                        <line x1="28" y1="104" x2="216" y2="104" stroke="#000" stroke-opacity=".35"/>
+                        <use href="#plWheel" class="pl-wheel" x="66" y="120"/>
+                        <use href="#plWheel" class="pl-wheel" x="186" y="120"/>
+                    </g>
+    
+                    <!-- Truck -->
+                    <g class="pl-truck">
+                        <!-- wheel-lift boom -->
+                        <path d="M258 100 L258 110 L236 112 L236 106 Z" fill="#3a3f42"/>
+                        <!-- bed / body -->
+                        <rect x="256" y="64" width="150" height="40" rx="3" fill="url(#plBody)" stroke="#000"/>
+                        <rect x="262" y="70" width="58" height="26" rx="2" fill="#141616" stroke="#2c3133"/>
+                        <rect x="326" y="70" width="74" height="26" rx="2" fill="#141616" stroke="#2c3133"/>
+                        <path d="M256 104 H406" stroke="#E61919" stroke-width="3"/>
+                                                    <!-- chassis -->
+                        <rect x="250" y="104" width="270" height="10" rx="2" fill="#1a1c1d"/>
+                        <!-- cab -->
+                        <path d="M408 112 L408 58 Q408 50 416 50 L466 50 Q474 50 480 58 L496 80 L516 84 Q526 86 526 96 L526 112 Z" fill="url(#plBody)" stroke="#000" stroke-width="1.2"/>
+                        <path d="M440 56 L464 56 Q470 56 474 62 L486 80 L440 80 Z" fill="url(#plGlass)"/>
+                        <path d="M414 56 L434 56 L434 80 L414 80 Z" fill="url(#plGlass)" opacity=".85"/>
+                        <!-- door logo -->
+                        <image href="assets/images/logo-mark.png" x="438" y="82" width="23" height="25"/>
+                        <!-- grille, headlight, bumper -->
+                        <rect x="518" y="90" width="8" height="14" rx="1.5" fill="#6d7377"/>
+                        <path class="pl-headlight" d="M512 88 h10 v7 h-10 z" fill="#fff4c4"/>
+                        <rect x="510" y="108" width="20" height="6" rx="2" fill="#a9b0b4"/>
+                        <!-- exhaust stack -->
+                        <rect x="402" y="34" width="5" height="24" rx="2" fill="#a9b0b4"/>
+                        <!-- light bar -->
+                        <rect x="420" y="44" width="48" height="6" rx="3" fill="#1b1b1b"/>
+                        <rect class="pl-led pl-led-a" x="422" y="45" width="13" height="4" rx="2" fill="#ffae00"/>
+                        <rect class="pl-led pl-led-b" x="437" y="45" width="13" height="4" rx="2" fill="#E61919"/>
+                        <rect class="pl-led pl-led-a" x="452" y="45" width="13" height="4" rx="2" fill="#ffae00"/>
+                        <use href="#plWheel" class="pl-wheel" x="292" y="120"/>
+                        <use href="#plWheel" class="pl-wheel" x="330" y="120"/>
+                        <use href="#plWheel" class="pl-wheel" x="486" y="120"/>
+                    </g>
+    
+                    <!-- exhaust puffs -->
+                    <circle class="pl-puff" cx="400" cy="30" r="5" fill="#9aa1a5"/>
+                    <circle class="pl-puff pl-puff-2" cx="400" cy="30" r="4" fill="#9aa1a5"/>
+                </svg>
+            </div>
+            <div class="pl-road"></div>
+        </div>
+        <div class="pl-bar"><span></span></div>
+    </div>
 
     <!-- Site Header -->
     <header class="site-header">
