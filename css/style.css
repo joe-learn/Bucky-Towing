@@ -625,6 +625,23 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+/* Mobile fix: cards with inline grid-column spans (e.g. About page) must stack */
+@media (max-width: 991px) {
+    .services-grid > [style*="grid-column"] {
+        grid-column: span 6 !important;
+    }
+    .services-grid > [style*="span 8"] {
+        grid-column: span 12 !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .services-grid > *,
+    .services-grid > [style*="grid-column"] {
+        grid-column: span 12 !important;
+    }
+}
+
 .service-card-bg {
     position: absolute;
     inset: 0;
